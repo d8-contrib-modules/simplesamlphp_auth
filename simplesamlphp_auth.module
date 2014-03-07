@@ -538,13 +538,7 @@ function _simplesamlphp_auth_isEnabled($show_inactive_msg = FALSE) {
   $is_activated = variable_get('simplesamlphp_auth_activate');
   $basedir     = variable_get('simplesamlphp_auth_installdir', '/var/simplesamlphp');
 
-  if (!$is_activated) {
-    $admin_path = array_keys(simplesamlphp_auth_admin_paths());
-    $failure   = t('SimpleSAMLphp authentication is NOT yet activated. It can be activated on the @admin_page.', array('@admin_page' => l(t('configuration page'), $admin_path[0])));
-    watchdog('simplesamlphp_auth', $failure, NULL, WATCHDOG_WARNING);
-
-  }
-  else {
+  if ($is_activated) {
     // Make sure we know where SimpleSAMLphp is.
     if (!file_exists($basedir)) {
       $failure = t('SimpleSAMLphp could not be found at %basedir . The simplesamlphp_auth module cannot function until the path to the local SimpleSAMLphp instance is configured.', array('%basedir' => $basedir));
