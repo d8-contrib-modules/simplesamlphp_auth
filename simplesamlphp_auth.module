@@ -196,7 +196,12 @@ function simplesamlphp_auth_init() {
   // Get the simplesamlphp session.
   $basedir = variable_get('simplesamlphp_auth_installdir', '/var/simplesamlphp');
 
-  require_once $basedir . '/lib/_autoload.php';
+  if (file_exists($basedir . '/lib/_autoload.php')) {
+     require_once $basedir . '/lib/_autoload.php';
+  }
+  else {
+    return;
+  }
 
   $_simplesamlphp_auth_saml_config  = SimpleSAML_Configuration::getInstance();
   $_simplesamlphp_auth_saml_version = $_simplesamlphp_auth_saml_config->getVersion();
@@ -534,9 +539,9 @@ function simplesamlphp_auth_block_info() {
 function _simplesamlphp_auth_isEnabled($show_inactive_msg = FALSE) {
   global $user;
 
-  $failure     = NULL;
+  $failure      = NULL;
   $is_activated = variable_get('simplesamlphp_auth_activate');
-  $basedir     = variable_get('simplesamlphp_auth_installdir', '/var/simplesamlphp');
+  $basedir      = variable_get('simplesamlphp_auth_installdir', '/var/simplesamlphp');
 
   if ($is_activated) {
     // Make sure we know where SimpleSAMLphp is.
